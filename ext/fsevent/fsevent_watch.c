@@ -157,10 +157,11 @@ static void callback(FSEventStreamRef streamRef,
 #endif
 
   for (size_t i = 0; i < numEvents; i++) {
-    fprintf(stdout, "%s", paths[i]);
-    fprintf(stdout, ":");
+    fprintf(stdout, "%lu:%llu:%s\n",
+      (unsigned long)eventFlags[i],
+      (unsigned long long)eventIds[i],
+      paths[i]);
   }
-
   fprintf(stdout, "\n");
   fflush(stdout);
 }
