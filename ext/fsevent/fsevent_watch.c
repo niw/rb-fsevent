@@ -192,6 +192,11 @@ int main(int argc, const char *argv[])
    *      after reading ruby 1.9's process.c
    *   5. if left completely undocumented, even slightly obscure bugfixes
    *      may be removed as cruft by a future maintainer
+   *
+   * hindsight is 20/20 addition: if you're single-threaded and blocking on IO
+   * with a subprocess, then handlers for deferrable signals might not get run
+   * when you expect them to. In the case of Ruby 1.8, that means making use of
+   * IO::select, which will preserve correct signal handling behavior.
    */
   if (setpgid(0,0) < 0) {
     fprintf(stderr, "Unable to set new process group.\n");

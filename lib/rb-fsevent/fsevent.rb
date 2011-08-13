@@ -76,7 +76,9 @@ class FSEvent
   def run
     @running = true
     modified_paths = []
-    while @running && !pipe.eof?
+    # please note the use of IO::select() here, as it is used specifically to
+    # preserve correct signal handling behavior in ruby 1.8.
+    while @running && IO::select([pipe], nil, nil, nil)
       if line = pipe.readline.chomp
         if line.empty?
           callback.call(modified_paths)
